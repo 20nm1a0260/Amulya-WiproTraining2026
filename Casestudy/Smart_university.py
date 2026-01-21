@@ -1,37 +1,7 @@
-from abc import ABC, abstractmethod
 import json
 import csv
 import time
-
-# ===================== DESCRIPTORS =====================
-class MarksDescriptor:
-    def __get__(self, instance, owner):
-        return instance._marks
-
-    def __set__(self, instance, value):
-        if all(0 <= m <= 100 for m in value):
-            instance._marks = value
-        else:
-            raise ValueError("Marks should be between 0 and 100")
-
-
-class SalaryDescriptor:
-    def __get__(self, instance, owner):
-        raise PermissionError("Access Denied: Salary is confidential")
-
-    def __set__(self, instance, value):
-        instance._salary = value
-
-
-# ===================== DECORATORS =====================
-def admin_only(func):
-    def wrapper(*args, **kwargs):
-        is_admin = False
-        if not is_admin:
-            print("Access Denied: Admin privileges required")
-            return
-        return func(*args, **kwargs)
-    return wrapper
+from abc import ABC, abstractmethod
 
 
 def log_execution(func):
@@ -41,18 +11,41 @@ def log_execution(func):
         return result
     return wrapper
 
+def admin_only(func):
+    def wrapper(*args, **kwargs):
+        if not kwargs.get("is_admin", False):
+            print("Access Denied: Admin privileges required")
+            return
+        return func(*args, **kwargs)
+    return wrapper
 
-def time_execution(func):
+def performance_timer(func):
     def wrapper(*args, **kwargs):
         start = time.time()
         result = func(*args, **kwargs)
         end = time.time()
-        print(f"[TIME] Execution Time: {end - start:.4f} seconds")
+        print(f"[TIMER] Execution Time: {end-start:.6f} seconds")
         return result
     return wrapper
 
 
-# ===================== ABSTRACT BASE CLASS =====================
+class MarksDescriptor:
+    def __get__(self, instance, owner):
+        return instance._marks
+
+    def __set__(self, instance, value):
+        if not all(0 <= m <= 100 for m in value):
+            raise ValueError("Marks should be between 0 and 100")
+        instance._marks = value
+
+class SalaryDescriptor:
+    def __get__(self, instance, owner):
+        raise PermissionError("Access Denied: Salary is confidential")
+
+    def __set__(self, instance, value):
+        instance._salary = value
+
+
 class Person(ABC):
     def __init__(self, pid, name, department):
         self.pid = pid
@@ -64,10 +57,8 @@ class Person(ABC):
         pass
 
     def __del__(self):
-        print(f"Cleaning up resources for {self.name}")
+        print(f"Cleaning up {self.name} record")
 
-
-# ===================== STUDENT CLASS =====================
 class Student(Person):
     marks = MarksDescriptor()
 
@@ -75,6 +66,7 @@ class Student(Person):
         super().__init__(sid, name, department)
         self.semester = semester
         self.marks = marks
+        self.courses = []
 
     def get_details(self):
         print("Student Details:")
@@ -84,9 +76,9 @@ class Student(Person):
         print(f"Department: {self.department}")
 
     @log_execution
-    @time_execution
+    @performance_timer
     def calculate_performance(self):
-        avg = sum(self.marks) / len(self.marks)
+        avg = sum(m for m in self.marks) / len(self.marks)
         grade = "A" if avg >= 85 else "B" if avg >= 70 else "C"
         return avg, grade
 
@@ -94,7 +86,6 @@ class Student(Person):
         return sum(self.marks) > sum(other.marks)
 
 
-# ===================== FACULTY CLASS =====================
 class Faculty(Person):
     salary = SalaryDescriptor()
 
@@ -110,7 +101,6 @@ class Faculty(Person):
         print(f"Department: {self.department}")
 
 
-# ===================== COURSE CLASS =====================
 class Course:
     def __init__(self, code, name, credits, faculty):
         self.code = code
@@ -121,14 +111,6 @@ class Course:
     def __add__(self, other):
         return self.credits + other.credits
 
-
-# ===================== DEPARTMENT (UTILITY CLASS) =====================
-class Department:
-    def __init__(self, name):
-        self.name = name
-
-
-# ===================== ITERATOR =====================
 class CourseIterator:
     def __init__(self, courses):
         self.courses = courses
@@ -139,61 +121,50 @@ class CourseIterator:
 
     def __next__(self):
         if self.index < len(self.courses):
-            course = self.courses[self.index]
+            val = self.courses[self.index]
             self.index += 1
-            return course
+            return val
         raise StopIteration
 
 
-# ===================== GENERATOR =====================
 def student_generator(students):
     print("Fetching Student Records...")
     for s in students:
         yield f"{s.pid} - {s.name}"
 
-
-# ===================== FILE HANDLING =====================
-def save_students_json(students):
-    data = []
-    for s in students:
-        data.append({
-            "id": s.pid,
-            "name": s.name,
-            "department": s.department,
-            "semester": s.semester,
-            "marks": s.marks
-        })
-    with open("students.json", "w") as f:
-        json.dump(data, f, indent=4)
-    print("Student data successfully saved to students.json")
-
-
-def generate_csv_report(students):
-    with open("students_report.csv", "w", newline="") as f:
-        writer = csv.writer(f)
-        writer.writerow(["ID", "Name", "Department", "Average", "Grade"])
+class FileManager:
+    @staticmethod
+    def save_json(students, filename="students.json"):
+        data = []
         for s in students:
-            avg, grade = s.calculate_performance()
-            writer.writerow([s.pid, s.name, s.department, avg, grade])
-    print("CSV Report Generated: students_report.csv")
+            data.append({
+                "id": s.pid,
+                "name": s.name,
+                "department": s.department,
+                "semester": s.semester,
+                "marks": s.marks
+            })
+        with open(filename, "w") as f:
+            json.dump(data, f, indent=2)
+        print("Student data successfully saved to students.json")
+
+    @staticmethod
+    def save_csv(students, filename="students_report.csv"):
+        with open(filename, "w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(["ID", "Name", "Department", "Average", "Grade"])
+            for s in students:
+                avg, grade = s.calculate_performance()
+                writer.writerow([s.pid, s.name, s.department, round(avg,2), grade])
+        print("CSV Report generated successfully")
 
 
-# ===================== MAIN PROGRAM =====================
 students = []
 faculty_list = []
 courses = []
 
 while True:
-    print("""
-1 → Add Student
-2 → Add Faculty
-3 → Add Course
-4 → Enroll Student to Course
-5 → Calculate Student Performance
-6 → Compare Two Students
-7 → Generate Reports
-8 → Exit
-""")
+    print("\n1 Add Student\n2 Add Faculty\n3 Add Course\n4 Calculate Performance\n5 Compare Students\n6 Generate Reports\n7 Exit")
     choice = input("Enter choice: ")
 
     try:
@@ -213,37 +184,41 @@ while True:
             fid = input("Faculty ID: ")
             name = input("Name: ")
             dept = input("Department: ")
-            sal = int(input("Salary: "))
-            f = Faculty(fid, name, dept, sal)
+            salary = int(input("Salary: "))
+            f = Faculty(fid, name, dept, salary)
             faculty_list.append(f)
             print("Faculty Created Successfully")
 
         elif choice == "3":
             code = input("Course Code: ")
-            name = input("Course Name: ")
+            cname = input("Course Name: ")
             credits = int(input("Credits: "))
             fid = input("Faculty ID: ")
-            faculty = next(f for f in faculty_list if f.pid == fid)
-            c = Course(code, name, credits, faculty)
+            fac = next(f for f in faculty_list if f.pid == fid)
+            c = Course(code, cname, credits, fac)
             courses.append(c)
             print("Course Added Successfully")
 
         elif choice == "4":
-            print("Enrollment Successful")
+            sid = input("Student ID: ")
+            s = next(s for s in students if s.pid == sid)
+            avg, grade = s.calculate_performance()
+            print(f"Average: {avg:.2f}, Grade: {grade}")
 
         elif choice == "5":
-            s = students[0]
-            avg, grade = s.calculate_performance()
-            print(f"Average: {avg}, Grade: {grade}")
+            s1 = students[0]
+            s2 = students[1]
+            print(f"{s1.name} > {s2.name} :", s1 > s2)
 
         elif choice == "6":
-            print(students[0] > students[1])
+            FileManager.save_json(students)
+            FileManager.save_csv(students)
+
+            print("Student Record Generator")
+            for rec in student_generator(students):
+                print(rec)
 
         elif choice == "7":
-            generate_csv_report(students)
-            save_students_json(students)
-
-        elif choice == "8":
             print("Thank you for using Smart University Management System")
             break
 
