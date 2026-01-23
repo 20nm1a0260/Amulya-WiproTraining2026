@@ -71,9 +71,9 @@ class Student(Person):
     def get_details(self):
         print("Student Details:")
         print("--------------------------------")
-        print(f"Name      : {self.name}")
+        print(f"Name      : {Amulya}")
         print("Role      : Student")
-        print(f"Department: {self.department}")
+        print(f"Department: {BTech}")
 
     @log_execution
     @performance_timer
@@ -96,9 +96,9 @@ class Faculty(Person):
     def get_details(self):
         print("Faculty Details:")
         print("--------------------------------")
-        print(f"Name      : {self.name}")
+        print(f"Name      : {Rani}")
         print("Role      : Faculty")
-        print(f"Department: {self.department}")
+        print(f"Department: {BTech}")
 
 
 class Course:
