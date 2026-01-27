@@ -3,6 +3,7 @@ import csv
 import time
 from abc import ABC, abstractmethod
 
+# ---------------- DECORATORS ---------------- #
 
 def log_execution(func):
     def wrapper(*args, **kwargs):
@@ -11,6 +12,7 @@ def log_execution(func):
         return result
     return wrapper
 
+
 def admin_only(func):
     def wrapper(*args, **kwargs):
         if not kwargs.get("is_admin", False):
@@ -18,6 +20,7 @@ def admin_only(func):
             return
         return func(*args, **kwargs)
     return wrapper
+
 
 def performance_timer(func):
     def wrapper(*args, **kwargs):
@@ -29,6 +32,8 @@ def performance_timer(func):
     return wrapper
 
 
+# ---------------- DESCRIPTORS ---------------- #
+
 class MarksDescriptor:
     def __get__(self, instance, owner):
         return instance._marks
@@ -38,6 +43,7 @@ class MarksDescriptor:
             raise ValueError("Marks should be between 0 and 100")
         instance._marks = value
 
+
 class SalaryDescriptor:
     def __get__(self, instance, owner):
         raise PermissionError("Access Denied: Salary is confidential")
@@ -45,6 +51,8 @@ class SalaryDescriptor:
     def __set__(self, instance, value):
         instance._salary = value
 
+
+# ---------------- ABSTRACT CLASS ---------------- #
 
 class Person(ABC):
     def __init__(self, pid, name, department):
@@ -59,6 +67,9 @@ class Person(ABC):
     def __del__(self):
         print(f"Cleaning up {self.name} record")
 
+
+# ---------------- STUDENT CLASS ---------------- #
+
 class Student(Person):
     marks = MarksDescriptor()
 
@@ -71,20 +82,22 @@ class Student(Person):
     def get_details(self):
         print("Student Details:")
         print("--------------------------------")
-        print(f"Name      : {Amulya}")
+        print(f"Name      : {self.name}")
         print("Role      : Student")
-        print(f"Department: {BTech}")
+        print(f"Department: {self.department}")
 
     @log_execution
     @performance_timer
     def calculate_performance(self):
-        avg = sum(m for m in self.marks) / len(self.marks)
+        avg = sum(self.marks) / len(self.marks)
         grade = "A" if avg >= 85 else "B" if avg >= 70 else "C"
         return avg, grade
 
     def __gt__(self, other):
         return sum(self.marks) > sum(other.marks)
 
+
+# ---------------- FACULTY CLASS ---------------- #
 
 class Faculty(Person):
     salary = SalaryDescriptor()
@@ -96,10 +109,12 @@ class Faculty(Person):
     def get_details(self):
         print("Faculty Details:")
         print("--------------------------------")
-        print(f"Name      : {Rani}")
+        print(f"Name      : {self.name}")
         print("Role      : Faculty")
-        print(f"Department: {BTech}")
+        print(f"Department: {self.department}")
 
+
+# ---------------- COURSE CLASS ---------------- #
 
 class Course:
     def __init__(self, code, name, credits, faculty):
@@ -111,6 +126,9 @@ class Course:
     def __add__(self, other):
         return self.credits + other.credits
 
+
+# ---------------- ITERATOR ---------------- #
+
 class CourseIterator:
     def __init__(self, courses):
         self.courses = courses
@@ -121,16 +139,21 @@ class CourseIterator:
 
     def __next__(self):
         if self.index < len(self.courses):
-            val = self.courses[self.index]
+            course = self.courses[self.index]
             self.index += 1
-            return val
+            return course
         raise StopIteration
 
+
+# ---------------- GENERATOR ---------------- #
 
 def student_generator(students):
     print("Fetching Student Records...")
     for s in students:
         yield f"{s.pid} - {s.name}"
+
+
+# ---------------- FILE HANDLING ---------------- #
 
 class FileManager:
     @staticmethod
@@ -155,9 +178,11 @@ class FileManager:
             writer.writerow(["ID", "Name", "Department", "Average", "Grade"])
             for s in students:
                 avg, grade = s.calculate_performance()
-                writer.writerow([s.pid, s.name, s.department, round(avg,2), grade])
+                writer.writerow([s.pid, s.name, s.department, round(avg, 2), grade])
         print("CSV Report generated successfully")
 
+
+# ---------------- MAIN PROGRAM ---------------- #
 
 students = []
 faculty_list = []
@@ -206,9 +231,11 @@ while True:
             print(f"Average: {avg:.2f}, Grade: {grade}")
 
         elif choice == "5":
-            s1 = students[0]
-            s2 = students[1]
-            print(f"{s1.name} > {s2.name} :", s1 > s2)
+            if len(students) < 2:
+                print("Not enough students to compare")
+            else:
+                s1, s2 = students[0], students[1]
+                print(f"{s1.name} > {s2.name} :", s1 > s2)
 
         elif choice == "6":
             FileManager.save_json(students)
@@ -222,5 +249,10 @@ while True:
             print("Thank you for using Smart University Management System")
             break
 
+        else:
+            print("Invalid choice")
+
+    except PermissionError as pe:
+        print(pe)
     except Exception as e:
         print("Error:", e)
