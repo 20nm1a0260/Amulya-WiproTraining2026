@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.4.1 (Python 3.13.11 on win32)" generated="2026-01-29T18:24:40.340038" rpa="false" schemaversion="5">
+<suite id="s1" name="Test2" source="C:\Users\user\Desktop\wipro\Assignment\DAY12\Question2\test2.robot">
+<test id="s1-t1" name="Verify Test Automation Environment" line="7">
+<kw name="Log To Console" owner="BuiltIn">
+<arg>===== ENVIRONMENT VERIFICATION STARTED =====</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-01-29T18:24:40.587418" elapsed="0.000698"/>
+</kw>
+<kw name="Run Process" owner="Process">
+<msg time="2026-01-29T18:24:40.589869" level="INFO">Starting process:
+python --version</msg>
+<msg time="2026-01-29T18:24:40.600426" level="INFO">Waiting for process to complete.</msg>
+<msg time="2026-01-29T18:24:40.615701" level="INFO">Process completed.</msg>
+<msg time="2026-01-29T18:24:40.615965" level="INFO">${py_result} = &lt;result object with rc 0&gt;</msg>
+<var>${py_result}</var>
+<arg>python</arg>
+<arg>--version</arg>
+<arg>stdout=PIPE</arg>
+<arg>stderr=PIPE</arg>
+<doc>Runs a process and waits for it to complete.</doc>
+<status status="PASS" start="2026-01-29T18:24:40.588524" elapsed="0.027487"/>
+</kw>
+<kw name="Run Keyword If" owner="BuiltIn">
+<arg>'${py_result.rc}' != '0'</arg>
+<arg>Fail</arg>
+<arg>Python is NOT installed or not in PATH</arg>
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<status status="PASS" start="2026-01-29T18:24:40.616668" elapsed="0.001209"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>Python Version: ${py_result.stdout}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-01-29T18:24:40.618221" elapsed="0.002485"/>
+</kw>
+<kw name="Run Process" owner="Process">
+<msg time="2026-01-29T18:24:40.621912" level="INFO">Starting process:
+robot --version</msg>
+<msg time="2026-01-29T18:24:40.628547" level="INFO">Waiting for process to complete.</msg>
+<msg time="2026-01-29T18:24:41.104305" level="INFO">Process completed.</msg>
+<msg time="2026-01-29T18:24:41.104635" level="INFO">${rf_result} = &lt;result object with rc 251&gt;</msg>
+<var>${rf_result}</var>
+<arg>robot</arg>
+<arg>--version</arg>
+<arg>stdout=PIPE</arg>
+<arg>stderr=PIPE</arg>
+<doc>Runs a process and waits for it to complete.</doc>
+<status status="PASS" start="2026-01-29T18:24:40.621112" elapsed="0.483576"/>
+</kw>
+<kw name="Run Keyword If" owner="BuiltIn">
+<kw name="Fail" owner="BuiltIn">
+<msg time="2026-01-29T18:24:41.107582" level="FAIL">Robot Framework is NOT installed</msg>
+<arg>Robot Framework is NOT installed</arg>
+<doc>Fails the test with the given message and optionally alters its tags.</doc>
+<status status="FAIL" start="2026-01-29T18:24:41.106575" elapsed="0.001312">Robot Framework is NOT installed</status>
+</kw>
+<arg>'${rf_result.rc}' != '0'</arg>
+<arg>Fail</arg>
+<arg>Robot Framework is NOT installed</arg>
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<status status="FAIL" start="2026-01-29T18:24:41.105247" elapsed="0.002779">Robot Framework is NOT installed</status>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>Robot Framework Version: ${rf_result.stdout}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="NOT RUN" start="2026-01-29T18:24:41.108551" elapsed="0.000076"/>
+</kw>
+<kw name="Run Keyword And Continue On Failure" owner="BuiltIn">
+<arg>Log</arg>
+<arg>SeleniumLibrary imported successfully</arg>
+<doc>Runs the keyword and continues execution even if a failure occurs.</doc>
+<status status="NOT RUN" start="2026-01-29T18:24:41.109061" elapsed="0.000064"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>SeleniumLibrary is available</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="NOT RUN" start="2026-01-29T18:24:41.109509" elapsed="0.000061"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>===== ENVIRONMENT VERIFICATION COMPLETED SUCCESSFULLY =====</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="NOT RUN" start="2026-01-29T18:24:41.110161" elapsed="0.000113"/>
+</kw>
+<status status="FAIL" start="2026-01-29T18:24:40.585911" elapsed="0.524775">Robot Framework is NOT installed</status>
+</test>
+<status status="FAIL" start="2026-01-29T18:24:40.342336" elapsed="0.769480"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Test2" id="s1" pass="0" fail="1" skip="0">Test2</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
