@@ -1,0 +1,32 @@
+
+*** Settings ***
+Documentation     Sample Test Suite with Setup, Teardown and Tags
+Suite Setup       Suite Initialization
+Suite Teardown    Suite Cleanup
+Test Setup        Test Initialization
+Test Teardown     Test Cleanup
+Library           BuiltIn
+
+*** Test Cases ***
+Login Test
+    [Tags]    smoke    login
+    Log To Console    Executing Login Test
+    Should Be Equal     10    10
+
+Addition Test
+    [Tags]    regression
+    ${result}=    Evaluate    5 + 5
+    Should Be Equal As Integers   ${result}    10
+
+*** Keywords ***
+Suite Initialization
+    Log To Console    ===== Suite Setup Executed =====
+
+Suite Cleanup
+    Log To Console    ===== Suite Teardown Executed =====
+
+Test Initialization
+    Log To Console    --- Test Setup Executed ---
+
+Test Cleanup
+    Log To Console    --- Test Teardown Executed ---
