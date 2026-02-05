@@ -1,0 +1,130 @@
+
+*** Settings ***
+Library        SeleniumLibrary
+
+*** Variables ***
+
+@{colours}    Red Green Blue
+
+@{USERS}     admin     user
+
+@{PASSWORDS}    admin123    user123
+
+*** Test Cases ***
+
+Working with If condition
+    ${age} =     Set Variable     20
+    IF    ${age}>=18
+        Log To Console   Eligible to vote
+    END
+
+
+Working with If else condition
+    ${num} =    Set Variable    90
+    IF    ${num}>10
+        Log To Console    Greater than 10
+    ELSE
+        Log To Console    less than or equal to 10
+    END
+
+
+Inline if(short condition)
+    ${status} =     Set Variable    Pass
+    IF     '${status}' == 'Pass'      Log To Console    Testpassed  
+
+
+Working with If else if else
+    ${marks} =    Set Variable    80
+    IF    ${marks}>=90
+        Log To Console  Grade A
+    ELSE IF    ${marks}>=75
+        Log To Console    Grade B
+    ELSE
+        Log To Console    Grade C 
+    END
+
+  
+Print Names using For loop
+    FOR    ${name}  IN     Sai Prakash Reddy
+        Log To Console    ${name}
+    END
+
+
+For Loop with list 
+    FOR    ${item}     IN     one two three
+        Log To Console    Item:${item}
+    END
+
+For Loop using Range 
+    FOR      ${i}     IN RANGE     5
+        Log To Console    ${i}
+    END
+
+
+For Loop with Step
+    FOR      ${i}     IN RANGE      1    10     2
+        Log To Console    Value:${i}
+    END
+
+
+For Loop with list variable
+    FOR     ${color}    IN         @{colours}
+        Log To Console   Color:${color}
+    END
+
+
+For loop with Enumerate
+    FOR    ${index}  ${value}  IN ENUMERATE     a     b    c
+        Log To Console    ${index}=${value}       
+    END
+   
+
+FOR Loop Using ZIP
+    FOR    ${u}    ${p}    IN ZIP    @{USERS}    @{PASSWORDS}
+        Log To Console    ${u} / ${p}
+    END
+
+Nested For Loop
+    FOR    ${i}    IN RANGE    1     6
+        FOR    ${j}    IN RANGE     1     3
+            Log To Console    i=${i},j=${j}
+        END
+    END    
+
+
+Print Numbers using while loop
+    ${count} =    Set Variable     1
+    WHILE    ${count}<=10
+        Log To Console    ${count}
+        ${count}     Evaluate     ${count}+1 
+       END
+
+Break Statement
+    FOR    ${j}     IN RANGE  15
+        IF     ${j} == 5
+            BREAK
+        END
+        Log To Console     ${j}
+    END
+
+Continue Statement
+    FOR    ${k}     IN RANGE  10
+        IF     ${k} == 5
+            CONTINUE
+        END
+        Log To Console     ${k}
+    END
+
+Try/Except block in Error Handling
+    TRY
+            Fail     Something went wrong
+    EXCEPT
+            Log To Console     Error handled
+    FINALLY
+            Log To Console    Always Executed
+    END
+
+
+Run Keyword If Example
+    ${status}=    Set Variable    PASS
+    Run Keyword If    '${status}' == 'PASS'    Log    Test Passed

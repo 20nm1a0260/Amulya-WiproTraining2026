@@ -1,0 +1,35 @@
+
+#! Question 1 – Handling Web Controls
+
+''' 
+Write a Selenium script that:	
+	
+1. Fills text boxes	
+	
+2. Selects radio buttons and checkboxes	
+	
+3. Chooses an option from a drop-down list using the Select class	
+	
+4. Submits the form and verifies a confirmation message	
+'''
+
+#& Ans : refer Question1 folder - Selenium1.py file
+
+
+#! Question 2 – Handling Alerts and Pop-ups
+
+''' 
+Write a Selenium script that:
+
+1. Triggers a JavaScript alert
+
+2. Accepts the alert and prints its message
+
+3. Dismisses a confirmation pop-up
+
+4. Enters text in a prompt alert and accepts it
+
+5. Verifies the result displayed on the page
+'''
+
+#& Ans : refer Question2/ Selenium2.py file

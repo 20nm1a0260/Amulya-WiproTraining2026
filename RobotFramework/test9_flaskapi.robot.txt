@@ -1,0 +1,75 @@
+
+*** Settings ***
+
+Library       RequestsLibrary
+
+*** Variables ***
+
+${baseurl} =  http://127.0.0.1:5000
+
+*** Test Cases ***
+
+#GET METHOD
+
+Verify Get All Users
+    Create Session    mysession         ${baseurl}
+    ${response} =     GET On Session    mysession    /users
+    Status Should Be     200     ${response}
+     ${user_json}=    Evaluate    $response.json()
+    Log To Console    ${response}
+    Log     ${user_json} =    console=True
+
+Verify Get Single user
+    Create Session    mysession         ${baseurl}
+    ${response} =     GET On Session    mysession    /users/1
+    Status Should Be     200     ${response}
+     ${user_json}=    Evaluate    $response.json()
+    Log To Console    ${response}
+    Log     ${user_json} =    console=True
+
+Verify Get Single user Not found
+    Create Session    mysession         ${baseurl}
+    ${response} =     GET On Session    mysession    /users/2
+    Status Should Be     200     ${response}
+    ${user_json}=    Evaluate    $response.json()
+    Log To Console    ${response}
+    Log     ${user_json} =    console=True
+
+#POST METHOD
+
+Create new user
+    Create Session    postsession    ${baseurl}
+    ${data}=    Create Dictionary    name=python   
+    ${response}=    POST On Session    postsession    /users    json=${data}
+    Status Should Be    201    ${response}
+    Log To Console    ${response}
+
+#PUT METHOD
+
+Update user put method
+    Create Session    mysession    ${baseurl}
+    ${data}=    Create Dictionary    name=Java   
+    ${response}=    PUT On Session    mysession    /users/1   json=${data}
+    Status Should Be    200    ${response}
+    Log To Console    ${response}
+
+#PATCH METHOD
+
+Update user patch method
+    Create Session    mysession    ${baseurl}
+    ${data}=    Create Dictionary    name=snehapatch   
+    ${response}=    PATCH On Session    mysession    /users/1   json=${data}
+    Status Should Be    200    ${response}
+    Log To Console    ${response}
+
+#DELETE USER
+
+Delete user by userid
+    Create Session    mysession    ${baseurl}   
+    ${response}=    DELETE On Session    mysession    /users/2
+    Status Should Be    400    ${response}
+    ${user_json}=    Evaluate    $response.json()
+    Log To Console    ${response}
+    Log     ${user_json} =    console=True
+    
+    
