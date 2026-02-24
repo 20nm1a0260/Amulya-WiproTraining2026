@@ -11,3 +11,9 @@ __pycache__/
 Reports/
 *.html
 *.xml
+
+# Allure reports
+allure-report/
+allure-results/
+*/allure-report/
+*/allure-results/
