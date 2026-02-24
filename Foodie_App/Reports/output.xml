@@ -1,0 +1,810 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.4.1 (Python 3.10.9 on win32)" generated="2026-02-24T08:09:17.850404" rpa="false" schemaversion="5">
+<suite id="s1" name="Food App" source="C:\Users\HP\OneDrive\Desktop\Amulya-Wipro-Training2026\Foodie_App\Foodie_App\robot_tests\Food_App.robot">
+<kw name="Create Session" owner="RequestsLibrary" type="SETUP">
+<msg time="2026-02-24T08:09:18.118470" level="INFO">Creating Session using : alias=foodie, url=http://127.0.0.1:5000, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<arg>foodie</arg>
+<arg>http://127.0.0.1:5000</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="PASS" start="2026-02-24T08:09:18.118470" elapsed="0.000000"/>
+</kw>
+<test id="s1-t1" name="User Registration - Success" line="88">
+<kw name="Generate Random String" owner="String">
+<msg time="2026-02-24T08:09:18.121472" level="INFO">${random} = 18793</msg>
+<var>${random}</var>
+<arg>5</arg>
+<arg>[NUMBERS]</arg>
+<doc>Generates a string with a desired ``length`` from the given ``chars``.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.120470" elapsed="0.001002"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-02-24T08:09:18.122474" level="INFO">${email} = amulya18793@gmail.com</msg>
+<var>${email}</var>
+<arg>${BASE_EMAIL}${random}@gmail.com</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.121472" elapsed="0.001002"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2026-02-24T08:09:18.124471" level="INFO">${USER_EMAIL} = amulya18793@gmail.com</msg>
+<arg>${USER_EMAIL}</arg>
+<arg>${email}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.123471" elapsed="0.001000"/>
+</kw>
+<kw name="Register User">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-02-24T08:09:18.126983" level="INFO">${payload} = {'name': 'Amulya', 'email': 'amulya18793@gmail.com', 'password': 'admin123'}</msg>
+<var>${payload}</var>
+<arg>name=${name}</arg>
+<arg>email=${email}</arg>
+<arg>password=${password}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.125473" elapsed="0.001510"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-02-24T08:09:18.141478" level="INFO">POST Request : url=http://127.0.0.1:5000/api/v1/users/register 
+ path_url=/api/v1/users/register 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '76', 'Content-Type': 'application/json'} 
+ body=b'{"name": "Amulya", "email": "amulya18793@gmail.com", "password": "admin123"}' 
+ </msg>
+<msg time="2026-02-24T08:09:18.142578" level="INFO">POST Response : url=http://127.0.0.1:5000/api/v1/users/register 
+ status=201, reason=CREATED 
+ headers={'Server': 'Werkzeug/3.1.6 Python/3.10.9', 'Date': 'Tue, 24 Feb 2026 02:39:18 GMT', 'Content-Type': 'application/json', 'Content-Length': '96', 'Connection': 'close'} 
+ body={
+  "email": "amulya18793@gmail.com",
+  "id": 1,
+  "name": "Amulya",
+  "password": "admin123"
+}
+ 
+ </msg>
+<msg time="2026-02-24T08:09:18.142578" level="INFO">${resp} = &lt;Response [201]&gt;</msg>
+<var>${resp}</var>
+<arg>foodie</arg>
+<arg>/api/v1/users/register</arg>
+<arg>json=${payload}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.127990" elapsed="0.014588"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>201</arg>
+<arg>${resp}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.142578" elapsed="0.001436"/>
+</kw>
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2026-02-24T08:09:18.145448" level="INFO">${uid} = 1</msg>
+<var>${uid}</var>
+<arg>int(${resp.json()['id']})</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.144014" elapsed="0.001434"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2026-02-24T08:09:18.147734" level="INFO">${USER_ID} = 1</msg>
+<arg>${USER_ID}</arg>
+<arg>${uid}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.146578" elapsed="0.001156"/>
+</kw>
+<arg>${USER_NAME}</arg>
+<arg>${USER_EMAIL}</arg>
+<arg>${USER_PASSWORD}</arg>
+<status status="PASS" start="2026-02-24T08:09:18.125473" elapsed="0.022261"/>
+</kw>
+<status status="PASS" start="2026-02-24T08:09:18.119470" elapsed="0.028264"/>
+</test>
+<test id="s1-t2" name="User Registration - Duplicate" line="94">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-02-24T08:09:18.150191" level="INFO">${payload} = {'name': 'Amulya', 'email': 'amulya18793@gmail.com', 'password': 'admin123'}</msg>
+<var>${payload}</var>
+<arg>name=${USER_NAME}</arg>
+<arg>email=${USER_EMAIL}</arg>
+<arg>password=${USER_PASSWORD}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.150191" elapsed="0.000000"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-02-24T08:09:18.172550" level="INFO">POST Request : url=http://127.0.0.1:5000/api/v1/users/register 
+ path_url=/api/v1/users/register 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '76', 'Content-Type': 'application/json'} 
+ body=b'{"name": "Amulya", "email": "amulya18793@gmail.com", "password": "admin123"}' 
+ </msg>
+<msg time="2026-02-24T08:09:18.172550" level="INFO">POST Response : url=http://127.0.0.1:5000/api/v1/users/register 
+ status=409, reason=CONFLICT 
+ headers={'Server': 'Werkzeug/3.1.6 Python/3.10.9', 'Date': 'Tue, 24 Feb 2026 02:39:18 GMT', 'Content-Type': 'application/json', 'Content-Length': '29', 'Connection': 'close'} 
+ body={
+  "error": "User exists"
+}
+ 
+ </msg>
+<msg time="2026-02-24T08:09:18.172550" level="INFO">${resp} = &lt;Response [409]&gt;</msg>
+<var>${resp}</var>
+<arg>foodie</arg>
+<arg>/api/v1/users/register</arg>
+<arg>json=${payload}</arg>
+<arg>expected_status=409</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.151193" elapsed="0.021357"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>409</arg>
+<arg>${resp}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.173552" elapsed="0.000000"/>
+</kw>
+<status status="PASS" start="2026-02-24T08:09:18.149147" elapsed="0.025405"/>
+</test>
+<test id="s1-t3" name="Register Restaurant" line="99">
+<kw name="Generate Random String" owner="String">
+<msg time="2026-02-24T08:09:18.176553" level="INFO">${random} = 5918</msg>
+<var>${random}</var>
+<arg>4</arg>
+<arg>[NUMBERS]</arg>
+<doc>Generates a string with a desired ``length`` from the given ``chars``.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.176553" elapsed="0.000000"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-02-24T08:09:18.178551" level="INFO">${restaurant} = FoodFun5918</msg>
+<var>${restaurant}</var>
+<arg>${BASE_RESTAURANT}${random}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.177553" elapsed="0.000998"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2026-02-24T08:09:18.183553" level="INFO">${RESTAURANT_NAME} = FoodFun5918</msg>
+<arg>${RESTAURANT_NAME}</arg>
+<arg>${restaurant}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.181554" elapsed="0.001999"/>
+</kw>
+<kw name="Register Restaurant">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-02-24T08:09:18.187554" level="INFO">${payload} = {'name': 'FoodFun5918', 'category': 'Veg', 'location': 'Delhi', 'images': 'img.jpg', 'contact': '123456'}</msg>
+<var>${payload}</var>
+<arg>name=${name}</arg>
+<arg>category=${category}</arg>
+<arg>location=${location}</arg>
+<arg>images=${images}</arg>
+<arg>contact=${contact}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.186554" elapsed="0.001000"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-02-24T08:09:18.200556" level="INFO">POST Request : url=http://127.0.0.1:5000/api/v1/restaurants 
+ path_url=/api/v1/restaurants 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '105', 'Content-Type': 'application/json'} 
+ body=b'{"name": "FoodFun5918", "category": "Veg", "location": "Delhi", "images": "img.jpg", "contact": "123456"}' 
+ </msg>
+<msg time="2026-02-24T08:09:18.200556" level="INFO">POST Response : url=http://127.0.0.1:5000/api/v1/restaurants 
+ status=201, reason=CREATED 
+ headers={'Server': 'Werkzeug/3.1.6 Python/3.10.9', 'Date': 'Tue, 24 Feb 2026 02:39:18 GMT', 'Content-Type': 'application/json', 'Content-Length': '171', 'Connection': 'close'} 
+ body={
+  "approved": false,
+  "category": "Veg",
+  "contact": "123456",
+  "disabled": false,
+  "id": 1,
+  "images": "img.jpg",
+  "location": "Delhi",
+  "name": "FoodFun5918"
+}
+ 
+ </msg>
+<msg time="2026-02-24T08:09:18.201561" level="INFO">${resp} = &lt;Response [201]&gt;</msg>
+<var>${resp}</var>
+<arg>foodie</arg>
+<arg>/api/v1/restaurants</arg>
+<arg>json=${payload}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.188554" elapsed="0.013007"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>201</arg>
+<arg>${resp}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.201561" elapsed="0.000999"/>
+</kw>
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2026-02-24T08:09:18.205994" level="INFO">${rid} = 1</msg>
+<var>${rid}</var>
+<arg>int(${resp.json()['id']})</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.203560" elapsed="0.002434"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2026-02-24T08:09:18.205994" level="INFO">${RID} = 1</msg>
+<arg>${RID}</arg>
+<arg>${rid}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.205994" elapsed="0.000000"/>
+</kw>
+<arg>${RESTAURANT_NAME}</arg>
+<arg>${RESTAURANT_CAT}</arg>
+<arg>Delhi</arg>
+<arg>img.jpg</arg>
+<arg>123456</arg>
+<status status="PASS" start="2026-02-24T08:09:18.185555" elapsed="0.020439"/>
+</kw>
+<status status="PASS" start="2026-02-24T08:09:18.175551" elapsed="0.031930"/>
+</test>
+<test id="s1-t4" name="View Restaurant Profile" line="105">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-02-24T08:09:18.218236" level="INFO">GET Request : url=http://127.0.0.1:5000/api/v1/restaurants/1 
+ path_url=/api/v1/restaurants/1 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg time="2026-02-24T08:09:18.218236" level="INFO">GET Response : url=http://127.0.0.1:5000/api/v1/restaurants/1 
+ status=200, reason=OK 
+ headers={'Server': 'Werkzeug/3.1.6 Python/3.10.9', 'Date': 'Tue, 24 Feb 2026 02:39:18 GMT', 'Content-Type': 'application/json', 'Content-Length': '171', 'Connection': 'close'} 
+ body={
+  "approved": false,
+  "category": "Veg",
+  "contact": "123456",
+  "disabled": false,
+  "id": 1,
+  "images": "img.jpg",
+  "location": "Delhi",
+  "name": "FoodFun5918"
+}
+ 
+ </msg>
+<msg time="2026-02-24T08:09:18.219248" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>foodie</arg>
+<arg>/api/v1/restaurants/${RID}</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.207481" elapsed="0.011767"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>200</arg>
+<arg>${resp}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.220550" elapsed="0.001213"/>
+</kw>
+<status status="PASS" start="2026-02-24T08:09:18.207481" elapsed="0.015545"/>
+</test>
+<test id="s1-t5" name="Update Restaurant" line="109">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-02-24T08:09:18.226220" level="INFO">${payload} = {'location': 'Mumbai'}</msg>
+<var>${payload}</var>
+<arg>location=Mumbai</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.224045" elapsed="0.002175"/>
+</kw>
+<kw name="PUT On Session" owner="RequestsLibrary">
+<msg time="2026-02-24T08:09:18.235137" level="INFO">PUT Request : url=http://127.0.0.1:5000/api/v1/restaurants/1 
+ path_url=/api/v1/restaurants/1 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '22', 'Content-Type': 'application/json'} 
+ body=b'{"location": "Mumbai"}' 
+ </msg>
+<msg time="2026-02-24T08:09:18.235137" level="INFO">PUT Response : url=http://127.0.0.1:5000/api/v1/restaurants/1 
+ status=200, reason=OK 
+ headers={'Server': 'Werkzeug/3.1.6 Python/3.10.9', 'Date': 'Tue, 24 Feb 2026 02:39:18 GMT', 'Content-Type': 'application/json', 'Content-Length': '172', 'Connection': 'close'} 
+ body={
+  "approved": false,
+  "category": "Veg",
+  "contact": "123456",
+  "disabled": false,
+  "id": 1,
+  "images": "img.jpg",
+  "location": "Mumbai",
+  "name": "FoodFun5918"
+}
+ 
+ </msg>
+<msg time="2026-02-24T08:09:18.235137" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>foodie</arg>
+<arg>/api/v1/restaurants/${RID}</arg>
+<arg>json=${payload}</arg>
+<doc>Sends a PUT request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.227220" elapsed="0.007917"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>200</arg>
+<arg>${resp}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.235137" elapsed="0.001494"/>
+</kw>
+<status status="PASS" start="2026-02-24T08:09:18.224045" elapsed="0.013589"/>
+</test>
+<test id="s1-t6" name="Search Restaurants" line="114">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-02-24T08:09:18.238982" level="INFO">${params} = {'name': 'Food'}</msg>
+<var>${params}</var>
+<arg>name=Food</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.238982" elapsed="0.000000"/>
+</kw>
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-02-24T08:09:18.253663" level="INFO">GET Request : url=http://127.0.0.1:5000/api/v1/restaurants/search?name=Food 
+ path_url=/api/v1/restaurants/search?name=Food 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg time="2026-02-24T08:09:18.253663" level="INFO">GET Response : url=http://127.0.0.1:5000/api/v1/restaurants/search?name=Food 
+ status=200, reason=OK 
+ headers={'Server': 'Werkzeug/3.1.6 Python/3.10.9', 'Date': 'Tue, 24 Feb 2026 02:39:18 GMT', 'Content-Type': 'application/json', 'Content-Length': '196', 'Connection': 'close'} 
+ body=[
+  {
+    "approved": false,
+    "category": "Veg",
+    "contact": "123456",
+    "disabled": false,
+    "id": 1,
+    "images": "img.jpg",
+    "location": "Mumbai",
+    "name": "FoodFun5918"
+  }
+]
+ 
+ </msg>
+<msg time="2026-02-24T08:09:18.255845" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>foodie</arg>
+<arg>/api/v1/restaurants/search</arg>
+<arg>params=${params}</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.240327" elapsed="0.015518"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>200</arg>
+<arg>${resp}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.257121" elapsed="0.001002"/>
+</kw>
+<status status="PASS" start="2026-02-24T08:09:18.237634" elapsed="0.020489"/>
+</test>
+<test id="s1-t7" name="Add Dish" line="119">
+<kw name="Add Dish">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-02-24T08:09:18.261769" level="INFO">${payload} = {'name': 'Paneer Biriyani', 'type': 'Main Course', 'price': '250', 'available_time': 'Lunch', 'image': 'paneer.jpg'}</msg>
+<var>${payload}</var>
+<arg>name=${name}</arg>
+<arg>type=${type}</arg>
+<arg>price=${price}</arg>
+<arg>available_time=${available_time}</arg>
+<arg>image=${image}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.261769" elapsed="0.000000"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-02-24T08:09:18.268881" level="INFO">POST Request : url=http://127.0.0.1:5000/api/v1/restaurants/1/dishes 
+ path_url=/api/v1/restaurants/1/dishes 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '116', 'Content-Type': 'application/json'} 
+ body=b'{"name": "Paneer Biriyani", "type": "Main Course", "price": "250", "available_time": "Lunch", "image": "paneer.jpg"}' 
+ </msg>
+<msg time="2026-02-24T08:09:18.268881" level="INFO">POST Response : url=http://127.0.0.1:5000/api/v1/restaurants/1/dishes 
+ status=201, reason=CREATED 
+ headers={'Server': 'Werkzeug/3.1.6 Python/3.10.9', 'Date': 'Tue, 24 Feb 2026 02:39:18 GMT', 'Content-Type': 'application/json', 'Content-Length': '181', 'Connection': 'close'} 
+ body={
+  "available_time": "Lunch",
+  "enabled": true,
+  "id": 1,
+  "image": "paneer.jpg",
+  "name": "Paneer Biriyani",
+  "price": "250",
+  "restaurant_id": 1,
+  "type": "Main Course"
+}
+ 
+ </msg>
+<msg time="2026-02-24T08:09:18.268881" level="INFO">${resp} = &lt;Response [201]&gt;</msg>
+<var>${resp}</var>
+<arg>foodie</arg>
+<arg>/api/v1/restaurants/${restaurant_id}/dishes</arg>
+<arg>json=${payload}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.263181" elapsed="0.005700"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>201</arg>
+<arg>${resp}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.269876" elapsed="0.001003"/>
+</kw>
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2026-02-24T08:09:18.275351" level="INFO">${did} = 1</msg>
+<var>${did}</var>
+<arg>int(${resp.json()['id']})</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.271876" elapsed="0.003475"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2026-02-24T08:09:18.276360" level="INFO">${DID} = 1</msg>
+<arg>${DID}</arg>
+<arg>${did}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.275351" elapsed="0.001009"/>
+</kw>
+<arg>${RID}</arg>
+<arg>${DISH_NAME}</arg>
+<arg>${DISH_TYPE}</arg>
+<arg>250</arg>
+<arg>Lunch</arg>
+<arg>paneer.jpg</arg>
+<status status="PASS" start="2026-02-24T08:09:18.260650" elapsed="0.015710"/>
+</kw>
+<status status="PASS" start="2026-02-24T08:09:18.259378" elapsed="0.016982"/>
+</test>
+<test id="s1-t8" name="Approve Restaurant" line="122">
+<kw name="Approve Restaurant">
+<kw name="PUT On Session" owner="RequestsLibrary">
+<msg time="2026-02-24T08:09:18.288861" level="INFO">PUT Request : url=http://127.0.0.1:5000/api/v1/admin/restaurants/1/approve 
+ path_url=/api/v1/admin/restaurants/1/approve 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '0'} 
+ body=None 
+ </msg>
+<msg time="2026-02-24T08:09:18.289868" level="INFO">PUT Response : url=http://127.0.0.1:5000/api/v1/admin/restaurants/1/approve 
+ status=200, reason=OK 
+ headers={'Server': 'Werkzeug/3.1.6 Python/3.10.9', 'Date': 'Tue, 24 Feb 2026 02:39:18 GMT', 'Content-Type': 'application/json', 'Content-Length': '39', 'Connection': 'close'} 
+ body={
+  "message": "Restaurant approved"
+}
+ 
+ </msg>
+<msg time="2026-02-24T08:09:18.289868" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>foodie</arg>
+<arg>/api/v1/admin/restaurants/${RID}/approve</arg>
+<doc>Sends a PUT request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.281074" elapsed="0.008794"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>200</arg>
+<arg>${resp}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.289868" elapsed="0.001002"/>
+</kw>
+<status status="PASS" start="2026-02-24T08:09:18.280078" elapsed="0.010792"/>
+</kw>
+<status status="PASS" start="2026-02-24T08:09:18.277837" elapsed="0.013033"/>
+</test>
+<test id="s1-t9" name="Place Order" line="125">
+<kw name="Place Order">
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2026-02-24T08:09:18.296984" level="INFO">${uid} = 1</msg>
+<var>${uid}</var>
+<arg>int(${USER_ID})</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.295469" elapsed="0.001515"/>
+</kw>
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2026-02-24T08:09:18.298436" level="INFO">${rid} = 1</msg>
+<var>${rid}</var>
+<arg>int(${RID})</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.296984" elapsed="0.002598"/>
+</kw>
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2026-02-24T08:09:18.300637" level="INFO">${dish_int} = 1</msg>
+<var>${dish_int}</var>
+<arg>int(${DID})</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.299582" elapsed="0.001055"/>
+</kw>
+<kw name="Create List" owner="BuiltIn">
+<msg time="2026-02-24T08:09:18.302077" level="INFO">${dish_list} = [1]</msg>
+<var>${dish_list}</var>
+<arg>${dish_int}</arg>
+<doc>Returns a list containing given items.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.300637" elapsed="0.001440"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-02-24T08:09:18.303931" level="INFO">${payload} = {'user_id': 1, 'restaurant_id': 1, 'dishes': [1]}</msg>
+<var>${payload}</var>
+<arg>user_id=${uid}</arg>
+<arg>restaurant_id=${rid}</arg>
+<arg>dishes=${dish_list}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.302077" elapsed="0.001854"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-02-24T08:09:18.311370" level="INFO">POST Request : url=http://127.0.0.1:5000/api/v1/orders 
+ path_url=/api/v1/orders 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '49', 'Content-Type': 'application/json'} 
+ body=b'{"user_id": 1, "restaurant_id": 1, "dishes": [1]}' 
+ </msg>
+<msg time="2026-02-24T08:09:18.312377" level="INFO">POST Response : url=http://127.0.0.1:5000/api/v1/orders 
+ status=201, reason=CREATED 
+ headers={'Server': 'Werkzeug/3.1.6 Python/3.10.9', 'Date': 'Tue, 24 Feb 2026 02:39:18 GMT', 'Content-Type': 'application/json', 'Content-Length': '121', 'Connection': 'close'} 
+ body={
+  "dishes": [
+    1
+  ],
+  "id": 1,
+  "restaurant_id": 1,
+  "status": "Placed",
+  "total_price": 250,
+  "user_id": 1
+}
+ 
+ </msg>
+<msg time="2026-02-24T08:09:18.312377" level="INFO">${resp} = &lt;Response [201]&gt;</msg>
+<var>${resp}</var>
+<arg>foodie</arg>
+<arg>/api/v1/orders</arg>
+<arg>json=${payload}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.303931" elapsed="0.008446"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>201</arg>
+<arg>${resp}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.313518" elapsed="0.001072"/>
+</kw>
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2026-02-24T08:09:18.317598" level="INFO">${oid} = 1</msg>
+<var>${oid}</var>
+<arg>int(${resp.json()['id']})</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.315600" elapsed="0.001998"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2026-02-24T08:09:18.317598" level="INFO">${ORDER_ID} = 1</msg>
+<arg>${ORDER_ID}</arg>
+<arg>${oid}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.317598" elapsed="0.000000"/>
+</kw>
+<status status="PASS" start="2026-02-24T08:09:18.293197" elapsed="0.024401"/>
+</kw>
+<status status="PASS" start="2026-02-24T08:09:18.292117" elapsed="0.026482"/>
+</test>
+<test id="s1-t10" name="View Orders By User" line="128">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-02-24T08:09:18.325605" level="INFO">GET Request : url=http://127.0.0.1:5000/api/v1/users/1/orders 
+ path_url=/api/v1/users/1/orders 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg time="2026-02-24T08:09:18.326609" level="INFO">GET Response : url=http://127.0.0.1:5000/api/v1/users/1/orders 
+ status=200, reason=OK 
+ headers={'Server': 'Werkzeug/3.1.6 Python/3.10.9', 'Date': 'Tue, 24 Feb 2026 02:39:18 GMT', 'Content-Type': 'application/json', 'Content-Length': '145', 'Connection': 'close'} 
+ body=[
+  {
+    "dishes": [
+      1
+    ],
+    "id": 1,
+    "restaurant_id": 1,
+    "status": "Placed",
+    "total_price": 250,
+    "user_id": 1
+  }
+]
+ 
+ </msg>
+<msg time="2026-02-24T08:09:18.326609" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>foodie</arg>
+<arg>/api/v1/users/${USER_ID}/orders</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.319853" elapsed="0.007262"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>200</arg>
+<arg>${resp}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.327115" elapsed="0.002008"/>
+</kw>
+<status status="PASS" start="2026-02-24T08:09:18.319853" elapsed="0.010306"/>
+</test>
+<test id="s1-t11" name="View Orders By Restaurant" line="132">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-02-24T08:09:18.338046" level="INFO">GET Request : url=http://127.0.0.1:5000/api/v1/restaurants/1/orders 
+ path_url=/api/v1/restaurants/1/orders 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg time="2026-02-24T08:09:18.338046" level="INFO">GET Response : url=http://127.0.0.1:5000/api/v1/restaurants/1/orders 
+ status=200, reason=OK 
+ headers={'Server': 'Werkzeug/3.1.6 Python/3.10.9', 'Date': 'Tue, 24 Feb 2026 02:39:18 GMT', 'Content-Type': 'application/json', 'Content-Length': '145', 'Connection': 'close'} 
+ body=[
+  {
+    "dishes": [
+      1
+    ],
+    "id": 1,
+    "restaurant_id": 1,
+    "status": "Placed",
+    "total_price": 250,
+    "user_id": 1
+  }
+]
+ 
+ </msg>
+<msg time="2026-02-24T08:09:18.338046" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>foodie</arg>
+<arg>/api/v1/restaurants/${RID}/orders</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.331357" elapsed="0.006689"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>200</arg>
+<arg>${resp}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.338046" elapsed="0.001360"/>
+</kw>
+<status status="PASS" start="2026-02-24T08:09:18.331357" elapsed="0.008049"/>
+</test>
+<test id="s1-t12" name="Give Rating" line="136">
+<kw name="Give Rating">
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2026-02-24T08:09:18.342012" level="INFO">${oid} = 1</msg>
+<var>${oid}</var>
+<arg>int(${ORDER_ID})</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.340685" elapsed="0.001327"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-02-24T08:09:18.343028" level="INFO">${payload} = {'order_id': 1, 'rating': '5', 'comment': 'Excellent'}</msg>
+<var>${payload}</var>
+<arg>order_id=${oid}</arg>
+<arg>rating=5</arg>
+<arg>comment=Excellent</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.342012" elapsed="0.001016"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-02-24T08:09:18.351660" level="INFO">POST Request : url=http://127.0.0.1:5000/api/v1/ratings 
+ path_url=/api/v1/ratings 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '54', 'Content-Type': 'application/json'} 
+ body=b'{"order_id": 1, "rating": "5", "comment": "Excellent"}' 
+ </msg>
+<msg time="2026-02-24T08:09:18.351660" level="INFO">POST Response : url=http://127.0.0.1:5000/api/v1/ratings 
+ status=201, reason=CREATED 
+ headers={'Server': 'Werkzeug/3.1.6 Python/3.10.9', 'Date': 'Tue, 24 Feb 2026 02:39:18 GMT', 'Content-Type': 'application/json', 'Content-Length': '74', 'Connection': 'close'} 
+ body={
+  "comment": "Excellent",
+  "id": 1,
+  "order_id": 1,
+  "rating": "5"
+}
+ 
+ </msg>
+<msg time="2026-02-24T08:09:18.351660" level="INFO">${resp} = &lt;Response [201]&gt;</msg>
+<var>${resp}</var>
+<arg>foodie</arg>
+<arg>/api/v1/ratings</arg>
+<arg>json=${payload}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.343028" elapsed="0.008632"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>201</arg>
+<arg>${resp}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.353140" elapsed="0.001006"/>
+</kw>
+<status status="PASS" start="2026-02-24T08:09:18.340685" elapsed="0.013461"/>
+</kw>
+<status status="PASS" start="2026-02-24T08:09:18.340685" elapsed="0.014462"/>
+</test>
+<test id="s1-t13" name="Disable Restaurant (Admin)" line="139">
+<kw name="PUT On Session" owner="RequestsLibrary">
+<msg time="2026-02-24T08:09:18.386216" level="INFO">PUT Request : url=http://127.0.0.1:5000/api/v1/admin/restaurants/1/disable 
+ path_url=/api/v1/admin/restaurants/1/disable 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '0'} 
+ body=None 
+ </msg>
+<msg time="2026-02-24T08:09:18.386216" level="INFO">PUT Response : url=http://127.0.0.1:5000/api/v1/admin/restaurants/1/disable 
+ status=200, reason=OK 
+ headers={'Server': 'Werkzeug/3.1.6 Python/3.10.9', 'Date': 'Tue, 24 Feb 2026 02:39:18 GMT', 'Content-Type': 'application/json', 'Content-Length': '39', 'Connection': 'close'} 
+ body={
+  "message": "Restaurant disabled"
+}
+ 
+ </msg>
+<msg time="2026-02-24T08:09:18.387543" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>foodie</arg>
+<arg>/api/v1/admin/restaurants/${RID}/disable</arg>
+<doc>Sends a PUT request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.376189" elapsed="0.011354"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>200</arg>
+<arg>${resp}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.388605" elapsed="0.001022"/>
+</kw>
+<status status="PASS" start="2026-02-24T08:09:18.374151" elapsed="0.016473"/>
+</test>
+<test id="s1-t14" name="View Admin Orders" line="143">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-02-24T08:09:18.401531" level="INFO">GET Request : url=http://127.0.0.1:5000/api/v1/admin/orders 
+ path_url=/api/v1/admin/orders 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg time="2026-02-24T08:09:18.401531" level="INFO">GET Response : url=http://127.0.0.1:5000/api/v1/admin/orders 
+ status=200, reason=OK 
+ headers={'Server': 'Werkzeug/3.1.6 Python/3.10.9', 'Date': 'Tue, 24 Feb 2026 02:39:18 GMT', 'Content-Type': 'application/json', 'Content-Length': '145', 'Connection': 'close'} 
+ body=[
+  {
+    "dishes": [
+      1
+    ],
+    "id": 1,
+    "restaurant_id": 1,
+    "status": "Placed",
+    "total_price": 250,
+    "user_id": 1
+  }
+]
+ 
+ </msg>
+<msg time="2026-02-24T08:09:18.401531" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>foodie</arg>
+<arg>/api/v1/admin/orders</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.392065" elapsed="0.009466"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>200</arg>
+<arg>${resp}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.401531" elapsed="0.001010"/>
+</kw>
+<status status="PASS" start="2026-02-24T08:09:18.392065" elapsed="0.010476"/>
+</test>
+<test id="s1-t15" name="View Admin Feedback" line="147">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-02-24T08:09:18.408009" level="INFO">GET Request : url=http://127.0.0.1:5000/api/v1/admin/feedback 
+ path_url=/api/v1/admin/feedback 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg time="2026-02-24T08:09:18.408009" level="INFO">GET Response : url=http://127.0.0.1:5000/api/v1/admin/feedback 
+ status=200, reason=OK 
+ headers={'Server': 'Werkzeug/3.1.6 Python/3.10.9', 'Date': 'Tue, 24 Feb 2026 02:39:18 GMT', 'Content-Type': 'application/json', 'Content-Length': '90', 'Connection': 'close'} 
+ body=[
+  {
+    "comment": "Excellent",
+    "id": 1,
+    "order_id": 1,
+    "rating": "5"
+  }
+]
+ 
+ </msg>
+<msg time="2026-02-24T08:09:18.408009" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>foodie</arg>
+<arg>/api/v1/admin/feedback</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.403816" elapsed="0.004193"/>
+</kw>
+<kw name="Status Should Be" owner="RequestsLibrary">
+<arg>200</arg>
+<arg>${resp}</arg>
+<doc>Fails if response status code is different than the expected.</doc>
+<status status="PASS" start="2026-02-24T08:09:18.408009" elapsed="0.001005"/>
+</kw>
+<status status="PASS" start="2026-02-24T08:09:18.402541" elapsed="0.006977"/>
+</test>
+<kw name="Delete All Sessions" owner="RequestsLibrary" type="TEARDOWN">
+<msg time="2026-02-24T08:09:18.411931" level="INFO">Deleting All Sessions</msg>
+<doc>Removes all the session objects</doc>
+<status status="PASS" start="2026-02-24T08:09:18.410925" elapsed="0.001006"/>
+</kw>
+<status status="PASS" start="2026-02-24T08:09:17.852409" elapsed="0.559522"/>
+</suite>
+<statistics>
+<total>
+<stat pass="15" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Food App" id="s1" pass="15" fail="0" skip="0">Food App</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
